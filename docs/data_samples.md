@@ -312,11 +312,23 @@ Hai đối tác, hai schema không tương thích. Gateway cấp mã vận đơn
 }
 ```
 
-Request bị từ chối (thiếu SĐT người nhận) → `400`, và gateway ghi một bản ghi DLQ:
+Request bị từ chối (thiếu SĐT người nhận) → `400`:
 
 ```json
 { "status": "REJECTED", "errors": [ { "field": "recipient.phone", "code": "REQUIRED" } ],
   "request_id": "req_7f3a9c01" }
+```
+
+Đồng thời gateway ghi một bản ghi vào `logistics.orders.dlq` (cùng cấu trúc §4, `stage = "GATEWAY"`;
+không cấp mã vận đơn):
+
+```json
+{
+  "dlq_id": "a83c19e4-…", "failed_at": "2026-10-18T10:05:51+07:00",
+  "source_channel": "PARTNER_API", "source_ref": "shopee:req_7f3a9c01",
+  "stage": "GATEWAY", "errors": ["recipient.phone:REQUIRED"],
+  "raw": { "...": "body request gốc" }
+}
 ```
 
 ### 2.4 Bản ghi gateway ghi vào Kafka `partner.orders.raw`
@@ -504,6 +516,9 @@ Bản ghi DLQ (`logistics.orders.dlq`):
 | `source_system` | string | KHÔNG | `PDA` / `SHIPPER_APP` / `FINANCE` |
 | `device_id` | string | CÓ | ID máy quét / điện thoại (S4, S5) |
 
+\* `shipment_id = null` chỉ với sự kiện gộp nhiều vận đơn: `cod_remitted` (S5) và
+`merchant_settlement` (S7); danh sách vận đơn nằm trong mảng `shipments[]` / `lines[]`.
+
 ---
 
 ## 6. S4 — Quét mã tại cơ sở (`logistics.tracking.events`)
@@ -520,6 +535,7 @@ Khóa phân vùng `facility_id`. Trường chung: `facility_id`, `facility_type`
 | `departed_hub` | `route_id`, `next_facility_id` |
 | `arrived_at_destination_post_office` | `prev_facility_id` |
 | `dispatched_for_delivery` | `shipper_id`, `attempt_no` |
+| `return_initiated` | `return_reason_code` (`MAX_ATTEMPTS_REACHED` / `RECEIVER_REFUSED` / `MERCHANT_REQUEST`) — quét chuyển hoàn tại bưu cục đích, sau lần giao thất bại cuối |
 | `returned_to_sender` | `return_reason_code` (quét tại bưu cục gốc khi hàng hoàn về) |
 | `exception_reported` | `exception_code` (`DAMAGED` / `MISSORTED` / `LABEL_UNREADABLE` / `MISSING_ON_ARRIVAL`), `note` |
 
@@ -572,59 +588,45 @@ Ví dụ xuyên suốt:
 Sự kiện `failed_delivery` ở trên là **sự kiện đến trễ**: điện thoại mất mạng, nên
 `processing_time − event_time` ≈ 4 giờ 07 phút.
 
-[//]: # (Nộp tiền theo ca &#40;không gắn với một `shipment_id`&#41;:)
+Nộp tiền theo ca (gộp nhiều vận đơn, `shipment_id = null`). Cuối ca shipper nộp toàn bộ tiền
+đã thu (COD + cước người nhận trả) về bưu cục; `expected_total_vnd` do app tính từ các lần
+`delivered` trong ca:
 
-[//]: # ()
-[//]: # (```json)
+```json
+{
+  "event_id": "5d2e…05", "event_type": "cod_remitted",
+  "event_time": "2026-10-21T18:05:00+07:00", "processing_time": "2026-10-21T18:05:02+07:00",
+  "schema_version": "v2.0", "shipment_id": null, "source_system": "SHIPPER_APP",
+  "device_id": "APP-SHP_P79_004518", "shipper_id": "SHP_P79_004518", "facility_id": "BC_P79_0042",
+  "gps_lat": null, "gps_lon": null,
+  "remit_id": "RM-20261021-BC_P79_0042-0031", "shift_date": "2026-10-21",
+  "shipments": [
+    { "shipment_id": "VTP26101800001238", "cod_collected_vnd": 450000, "fee_collected_vnd": 0 },
+    { "shipment_id": "VTP26101900004410", "cod_collected_vnd": 1250000, "fee_collected_vnd": 32000 },
+    { "shipment_id": "VTP26102000000871", "cod_collected_vnd": 0, "fee_collected_vnd": 41000 }
+  ],
+  "expected_total_vnd": 1773000,
+  "remitted_total_vnd": 1773000,
+  "received_by": "STF_P79_0877"
+}
+```
 
-[//]: # ({)
-
-[//]: # (  "event_id": "5d2e…05", "event_type": "cod_remitted",)
-
-[//]: # (  "event_time": "2026-10-21T18:05:00+07:00", "processing_time": "2026-10-21T18:05:02+07:00",)
-
-[//]: # (  "schema_version": "v2.0", "shipment_id": null, "source_system": "SHIPPER_APP",)
-
-[//]: # (  "device_id": "APP-SHP_P79_004518", "shipper_id": "SHP_P79_004518", "facility_id": "BC_P79_0042",)
-
-[//]: # (  "remit_id": "RM-20261021-BC_P79_0042-0031", "shift_date": "2026-10-21",)
-
-[//]: # (  "shipments": [)
-
-[//]: # (    { "shipment_id": "VTP26101800001238", "cod_collected_vnd": 450000, "fee_collected_vnd": 0 },)
-
-[//]: # (    { "shipment_id": "VTP26101900004410", "cod_collected_vnd": 1250000, "fee_collected_vnd": 32000 },)
-
-[//]: # (    { "shipment_id": "VTP26102000000871", "cod_collected_vnd": 0, "fee_collected_vnd": 41000 })
-
-[//]: # (  ],)
-
-[//]: # (  "expected_total_vnd": 1773000,)
-
-[//]: # (  "remitted_total_vnd": 1773000,)
-
-[//]: # (  "received_by": "STF_P79_0877")
-
-[//]: # (})
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (Ví dụ thất thoát &#40;lỗi có gắn nhãn&#41;: `expected_total_vnd = 2.180.000`, `remitted_total_vnd = 1.930.000`, thiếu 250.000.)
+Ví dụ thất thoát (lỗi có gắn nhãn `COD_SHORTFALL`): `expected_total_vnd = 2.180.000`,
+`remitted_total_vnd = 1.930.000`, thiếu 250.000.
 
 ---
 
 ## 8. S7 — Tài chính (`logistics.financial.events`)
 
 Khóa phân vùng `merchant_id`. Trường chung: `transaction_id`, `merchant_id`, `facility_id`,
-`branch_id`, `service_type_id`.
+`branch_id`, `service_type_id` (trừ `merchant_settlement`: chỉ có `transaction_id`, `merchant_id`).
 
 | `event_type` | Kích hoạt bởi | Trường bổ sung |
 |---|---|---|
 | `fee_confirmed` | Lấy hàng, cân nặng trong ngưỡng cho phép | `pricing_version`, chi tiết cước, `total_fee_vnd` |
 | `fee_adjusted` | Lấy hàng, cân nặng chênh lệch | `old_total_fee_vnd`, `new_total_fee_vnd`, `adjustment_vnd`, chi tiết cước mới, `reason_code` (`REWEIGH` / `ADDRESS_CHANGE` / `MANUAL`) |
 | `return_fee_charged` | `return_initiated` | `return_fee_vnd`, `base_main_fee_vnd`, `return_fee_pct` |
-| `cod_payout` | Kỳ chi trả | `payout_id`, `period`, `lines[]` (`shipment_id`, `cod_vnd`, `fee_deducted_vnd`, `net_vnd`), `total_cod_vnd`, `total_fee_deducted_vnd`, `total_net_vnd`, `bank_account_no` |
+| `merchant_settlement` | Hết kỳ đối soát | `settlement_id`, `period`, `lines[]` (`shipment_id`, `cod_vnd`, `fee_deducted_vnd`, `net_vnd`), `total_cod_vnd`, `total_fee_deducted_vnd`, `total_net_vnd`, `bank_account_no` |
 
 Ví dụ xuyên suốt:
 
@@ -652,6 +654,35 @@ Phí hoàn:
   "shipment_id": "VTP26101800001253", "source_system": "FINANCE",
   "transaction_id": "TX-20261022-000003310", "merchant_id": "MER_000845",
   "base_main_fee_vnd": 55000, "return_fee_pct": 0.5, "return_fee_vnd": 27500 }
+```
+
+Đối soát với shop (`merchant_settlement`). Đối soát hai chiều: shop nhận COD, đồng thời trả
+cước và phí hoàn. **Mỗi sự kiện ứng với một merchant trong một kỳ** (`merchants.payout_cycle`:
+DAILY / WEEKLY): tài chính gộp mọi vận đơn của shop **kết thúc** trong kỳ (giao thành công
+hoặc hoàn về) thành các dòng `lines[]`. Shop không có đơn nào kết thúc trong kỳ thì không
+phát sự kiện.
+
+- `cod_vnd` = COD thực thu (`delivered.cod_collected_vnd`); đơn hoàn = 0.
+- `fee_deducted_vnd` = cước chốt (`fee_confirmed` / `fee_adjusted`) nếu `fee_payer = SENDER`,
+  cộng `return_fee_vnd` nếu đơn hoàn. Đơn `fee_payer = RECEIVER` giao thành công thì cước đã
+  thu tại cửa → 0.
+- `net_vnd = cod_vnd − fee_deducted_vnd` (có thể âm: đơn không COD vẫn phải trả cước).
+- `total_*` = tổng các dòng; `total_net_vnd` là số tiền chuyển cho shop (âm → shop nợ, cộng dồn kỳ sau).
+
+```json
+{
+  "event_id": "7c3b…02", "event_type": "merchant_settlement",
+  "event_time": "2026-10-22T02:00:00+07:00", "processing_time": "2026-10-22T02:00:04+07:00",
+  "schema_version": "v2.0", "shipment_id": null, "source_system": "FINANCE",
+  "transaction_id": "TX-20261022-000001877", "merchant_id": "MER_000845",
+  "settlement_id": "ST-20261022-MER_000845", "period": "2026-10-21",
+  "lines": [
+    { "shipment_id": "VTP26101800001238", "cod_vnd": 450000, "fee_deducted_vnd": 75000, "net_vnd": 375000 },
+    { "shipment_id": "VTP26101900002291", "cod_vnd": 0, "fee_deducted_vnd": 41000, "net_vnd": -41000 }
+  ],
+  "total_cod_vnd": 450000, "total_fee_deducted_vnd": 116000, "total_net_vnd": 334000,
+  "bank_account_no": "0451000123456"
+}
 ```
 
 ---
@@ -712,6 +743,98 @@ Mọi cặp (trạng thái, sự kiện) không có trong bảng được đưa 
 | TP HCM, TPHCM, HCM, Sài Gòn | Thành phố Hồ Chí Minh | PROVINCE |
 | Q10, Q.10, Quận 10 | Quận 10 | DISTRICT |
 | P.10, F10, Phường 10 | Phường 10 | WARD |
+
+---
+
+
+## 10. Nhãn ground truth (`sim_labels/`, chỉ dùng để đánh giá)
+
+Mọi nghiệp vụ phải có chỉ số đo được (precision/recall cảnh báo, tỷ lệ phát hiện lỗi DQ, …),
+nên cần **đáp án đúng** để so. Dữ liệu thật không có đáp án; dữ liệu giả lập thì có, vì chính
+bộ giả lập cố ý tiêm lỗi nên biết chính xác bản ghi nào sai và sai kiểu gì. Bảng này là nơi bộ
+giả lập ghi đáp án đó: một dòng cho mỗi lỗi nó tiêm (và mỗi địa chỉ nó cố ý làm nhiễu).
+
+- Pipeline **không bao giờ đọc** bảng này (đọc thì như nhìn đáp án khi làm bài).
+- Chỉ **job đánh giá** đọc nó: join nhãn với đầu ra của pipeline (DLQ, `invalid_transitions`,
+  bảng cảnh báo, …) qua `record_ref` / `shipment_id`, rồi tính chỉ số theo từng `fault_type`.
+
+Ví dụ: tiêm 100 dòng `INVALID_PHONE`; DQ từ chối 98 dòng, trong đó 95 dòng có nhãn và 3 dòng
+là đơn sạch bị bắt nhầm → recall = 95/100 = 95%, precision = 95/98 ≈ 97%.
+
+Ý nghĩa các cột chính: `fault_type` để nhóm khi tính chỉ số; `record_ref` là khóa join với đầu
+ra của pipeline; `expected_detection` cho biết thành phần nào của pipeline phải bắt được lỗi;
+`expected_value` là đáp án khi cần so giá trị. `ADDRESS_NOISE` không phải lỗi bị từ chối mà là
+bài kiểm tra cho bước chuẩn hóa địa chỉ (đo tỷ lệ ra đúng `expected_value`).
+
+Lưu dạng Parquet trên MinIO / S3: `sim_labels/date=YYYY-MM-DD/labels-<run_id>-<seq>.parquet`.
+
+| Cột | Kiểu | Null | Ý nghĩa |
+|---|---|---|---|
+| `label_id` | string | KHÔNG | `L-<run_id>-<seq>` |
+| `run_id` | string | KHÔNG | Lần chạy giả lập |
+| `shipment_id` | string | CÓ | Null khi bản ghi bị từ chối trước khi cấp mã (S2 DLQ, dòng CSV lỗi) |
+| `source` | string | KHÔNG | `S1` / `S2` / `S3` / `S4` / `S5` / `S7` |
+| `fault_type` | string | KHÔNG | Xem danh mục dưới |
+| `injected_at` | timestamp +07:00 | KHÔNG | Thời điểm nghiệp vụ của bản ghi bị tiêm lỗi |
+| `record_ref` | string | CÓ | Định vị bản ghi: `event_id`, `request_id`, `file_path#row=N`, `remit_id` |
+| `detail` | string | CÓ | Mô tả ngắn cho người đọc |
+| `expected_value` | string | CÓ | Giá trị đúng (vd `ward_id` đúng của địa chỉ nhiễu, tổng cước đúng) |
+| `expected_detection` | string | KHÔNG | Cơ chế phía pipeline phải bắt được lỗi này |
+
+Danh mục `fault_type`:
+
+| fault_type | Nguồn | Cách tiêm | expected_detection |
+|---|---|---|---|
+| `INVALID_PHONE` | S2, S3 | SĐT sai độ dài / sai đầu số | DQ từ chối (gateway 400 hoặc dòng import REJECTED) |
+| `NON_POSITIVE_WEIGHT` | S3 | Khối lượng ≤ 0 | DQ từ chối |
+| `NEGATIVE_COD` | S3 | COD âm | DQ từ chối |
+| `MISSING_FIELD` | S2, S3 | Bỏ trống trường bắt buộc (tên / SĐT / địa chỉ người nhận) | DQ từ chối |
+| `CROSS_CHANNEL_DUPLICATE` | S2, S3 | Gửi lại đơn đã tạo ở kênh khác, cùng `(merchant_id, merchant_order_ref)` | Khử trùng theo khóa nghiệp vụ |
+| `STALE_PRICING_VERSION` | S1, S2 | Báo giá theo phiên bản bảng giá đã hết hiệu lực | `FEE_MISMATCH` |
+| `MISSING_REMOTE_FEE` | S1, S2 | Bỏ phụ phí vùng xa cho đơn đi vùng xa | `FEE_MISMATCH` |
+| `WRONG_INSURANCE` | S1, S2 | Tính sai phí bảo hiểm | `FEE_MISMATCH` |
+| `ADDRESS_NOISE` | S2, S3 | Viết tắt, bỏ dấu, dùng tên cũ trước 2025, thiếu cấp | Chuẩn hóa ra đúng `expected_value` (đo độ chính xác, không phải lỗi) |
+| `LATE_EVENT` | S4, S5 | Giữ sự kiện lại trước khi gửi Kafka | Watermark / sắp xếp lại; vượt watermark → ghi `late_events` |
+| `DUPLICATE_EVENT` | S4, S5 | Gửi lại cùng sự kiện, cùng `event_id` | Khử trùng theo `event_id` |
+| `INVALID_TRANSITION` | S4, S5 | Phát sự kiện không hợp lệ với trạng thái hiện tại (vd `delivered` khi chưa `dispatched_for_delivery`) | `invalid_transitions` |
+| `ORPHAN_EVENT` | S4 | Quét mã một `shipment_id` không tồn tại | `ORPHAN_EVENT` sau thời gian chờ |
+| `STUCK` | S4 | Dừng phát mọi sự kiện sau một lần quét | Cảnh báo `STUCK` → `LOST` |
+| `MISROUTE` | S4 | Chuyển hàng tới hub khác hub mà tuyến yêu cầu | `ABNORMAL_ROUTE` |
+| `COD_SHORTFALL` | S5 | `remitted_total_vnd < expected_total_vnd` | Đối soát COD |
+
+Ví dụ:
+
+| label_id | shipment_id | source | fault_type | injected_at | detail | expected_detection |
+|---|---|---|---|---|---|---|
+| L-000101 | — | S3 | INVALID_PHONE | 2026-10-18T11:00:12+07:00 | dòng 3, `09123` | DQ từ chối |
+| L-000102 | — | S3 | NON_POSITIVE_WEIGHT | 2026-10-18T11:00:12+07:00 | dòng 4, `-300` | DQ từ chối |
+| L-000103 | VTP26101700009915 | S3 | CROSS_CHANNEL_DUPLICATE | 2026-10-18T11:00:12+07:00 | dòng 6 = đơn OMS_APP `LC-1017-088` | khử trùng từ chối |
+| L-000104 | VTP26101800001253 | S2 | STALE_PRICING_VERSION | 2026-10-18T10:15:40+07:00 | báo giá theo PV2026_07 | FEE_MISMATCH |
+| L-000105 | VTP26101800001238 | S5 | LATE_EVENT | 2026-10-20T10:05:10+07:00 | failed_delivery trễ 4 giờ 07 phút | watermark / reorder |
+| L-000106 | VTP26101900007710 | S4 | STUCK | 2026-10-19T12:00:00+07:00 | không có lần quét nào sau arrived_at_hub | cảnh báo STUCK → LOST |
+| L-000107 | — | S5 | COD_SHORTFALL | 2026-10-21T18:30:00+07:00 | phiếu nộp RM-…-0044 thiếu 250.000 | đối soát |
+| L-000108 | VTP26101800001311 | S4 | DUPLICATE_EVENT | 2026-10-18T14:20:00+07:00 | cùng một lần quét gửi lại với cùng event_id | khử trùng |
+| L-000109 | VTP26101800001329 | S4 | MISROUTE | 2026-10-18T20:10:00+07:00 | đến HUB_P48_01, tuyến yêu cầu HUB_P79_01 | ABNORMAL_ROUTE |
+
+---
+
+## 11. Các nguồn làm sau (hình dạng nháp)
+
+Bản ghi GPS S6 (`logistics.gps.pings`, khóa phân vùng `device_id`):
+
+```json
+{ "event_id": "…", "event_time": "2026-10-21T09:18:30+07:00", "device_id": "APP-SHP_P79_004518",
+  "entity_type": "SHIPPER", "entity_id": "SHP_P79_004518", "lat": 10.77385, "lon": 106.70401,
+  "speed_kmh": 18.5, "heading": 92, "accuracy_m": 6, "battery_pct": 54 }
+```
+
+Dòng sao kê ngân hàng S8 (`landing/bank/2026-10-22/statement.csv`):
+
+```csv
+txn_date,value_date,bank_txn_ref,account_no,direction,amount_vnd,counterparty,description
+2026-10-21,2026-10-21,FT26294A11B2,0011009988776,CREDIT,1773000,BC_P79_0042,NOP COD RM-20261021-BC_P79_0042-0031
+2026-10-22,2026-10-22,FT26295C33D4,0011009988776,DEBIT,334000,0451000123456,CHI TRA COD ST-20261022-MER_000845
+```
 
 ---
 

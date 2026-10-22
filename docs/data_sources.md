@@ -16,21 +16,20 @@ ingest như thế nào và đầu ra của từng nguồn dùng để làm gì. 
 
 ## 2. Danh mục nguồn
 
-| # | Nguồn (hệ thống giả lập) | Vai trò | Dữ liệu | Định dạng | Đường ingest | 
+| # | Nguồn (hệ thống giả lập) | Vai trò | Dữ liệu | Định dạng | Đường ingest |
 |---|---|---|---|---|---|
 | S1 | OMS — đặt hàng web/app (PostgreSQL) | Gốc đơn hàng + dữ liệu danh mục | `orders`, `merchants`, `pricing_rules`, `sla_config` | Quan hệ | Debezium CDC → Kafka `oms.public.*` | 1, 7, 8, 9 | Ngay |
-| S2 | Partner API (sàn TMĐT đẩy đơn) | Gốc đơn hàng | Đơn hàng theo 2 schema riêng của đối tác | JSON lồng nhau qua REST | FastAPI gateway (kiểm tra + báo giá) → Kafka `partner.orders.raw` | 1 | Ngay |
+| S2 | Partner API (sàn TMĐT đẩy đơn) | Gốc đơn hàng | Đơn hàng theo 2 schema riêng của đối tác | JSON lồng nhau qua REST | FastAPI gateway (kiểm tra + báo giá) → Kafka `partner.orders.raw`; bị từ chối → `logistics.orders.dlq` | 1 | Ngay |
 | S3 | Nhập đơn hàng loạt (Excel/CSV của shop) | Gốc đơn hàng | Danh sách đơn, header tiếng Việt, địa chỉ tự do | CSV / XLSX | `landing/bulk_orders/` → Airflow sensor → Spark import | 1 | Ngay |
-| S4 | Quét mã tại cơ sở (bưu cục / hub) | Thay đổi trạng thái | Sự kiện quét tại các điểm | JSON (Avro) | Kafka `logistics.tracking.events` | 2, 5, 8 | Ngay |
+| S4 | Quét mã tại cơ sở (bưu cục / hub) | Thay đổi trạng thái | Sự kiện quét tại các điểm, kể cả chuyển hoàn | JSON (Avro) | Kafka `logistics.tracking.events` | 2, 5, 8 | Ngay |
 | S5 | App shipper | Thay đổi trạng thái | Kết quả lấy / giao hàng, cân nặng thực tế, COD đã thu / đã nộp, ... | JSON (Avro) | Kafka `logistics.shipper.events` | 2, 7 | Ngay |
 | S7 | Hệ thống tài chính / tính cước | Ghi nhận tiền | Cước chốt / điều chỉnh cước, phí hoàn, trả COD cho shop | JSON (Avro) | Kafka `logistics.financial.events` | 7 | Ngay |
 | S9 | Dữ liệu tham chiếu tĩnh | Dimension Tables | Địa giới + ánh xạ hành chính 2025, cơ sở, tuyến, shipper, dịch vụ, chuyển trạng thái, lý do thất bại | CSV / Parquet | Seed một lần lên S3 | 1, 2, 9, 13 | Ngay |
+| — | Nhãn ground truth (chỉ dùng để đánh giá) | Đánh giá | Lỗi tiêm, bản ghi trùng, sai cước, thất thoát COD, địa chỉ nhiễu | Parquet | Simulator → `sim_labels/` (schema: [data_samples.md §10](data_samples.md)) | Đánh giá | Ngay |
 
 [//]: # (| S6 | GPS &#40;xe tải + shipper&#41; | Telemetry | Tọa độ gửi về mỗi vài giây | JSON &#40;Avro&#41;, tần suất cao | Kafka `logistics.gps.pings` | 3, 8, thực nghiệm | Sau |)
 
 [//]: # (| S8 | Sao kê ngân hàng &#40;file hằng ngày&#41; | Tiền &#40;bên ngoài&#41; | Giao dịch nộp tiền và chi trả | CSV cột cố định | `landing/bank/` → Airflow → đối soát | 7 | Sau |)
-
-[//]: # (| — | Nhãn ground truth &#40;chỉ dùng để đánh giá&#41; | Đánh giá | Lỗi tiêm, bản ghi trùng, sai cước, thất thoát COD | Parquet | Simulator → `sim_labels/` | Đánh giá | Ngay |)
 
 [//]: # (**Nền tảng:** Schema Registry &#40;Avro, tương thích ngược&#41; cho mọi topic Kafka; DataHub cho)
 
@@ -86,7 +85,7 @@ Mỗi con số tiền chỉ có đúng một nguồn ghi nhận.
 | Phí hoàn | Khi bắt đầu hoàn | S7 | `return_fee_charged` |
 | COD thực thu (+ cước nếu người nhận trả) | Giao thành công | S5 | `delivered.cod_collected_vnd`, `fee_collected_vnd` |
 | COD nộp về bưu cục | Cuối ca shipper | S5 | `cod_remitted` |
-| COD trả cho shop | Theo kỳ chi trả (hằng ngày) | S7 | `cod_payout` (= COD − cước nếu khấu trừ) |
+| Đối soát với shop | Theo kỳ đối soát (hằng ngày / hằng tuần) | S7 | `merchant_settlement` (= COD − cước − phí hoàn, mỗi merchant một sự kiện mỗi kỳ) |
 | Số tiền ngân hàng ghi nhận | Hằng ngày | S8 (sau) | các dòng sao kê |
 
 

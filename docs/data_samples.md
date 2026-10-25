@@ -41,7 +41,6 @@ CREATE TABLE merchants (
     email                TEXT,
     pickup_address       TEXT NOT NULL,                -- văn bản tự do, như khách nhập
     pickup_province_id   VARCHAR(8),
-    pickup_district_id   VARCHAR(16),
     pickup_ward_id       VARCHAR(24),
     default_facility_id  VARCHAR(16),                  -- bưu cục phụ trách lấy hàng
     contract_type        VARCHAR(16) NOT NULL,         -- PAY_PER_USE / VOLUME / FIXED
@@ -98,7 +97,6 @@ CREATE TABLE orders (
     sender_phone           VARCHAR(16) NOT NULL,
     sender_address         TEXT NOT NULL,
     sender_province_id     VARCHAR(8),
-    sender_district_id     VARCHAR(16),
     sender_ward_id         VARCHAR(24),
     pickup_facility_id     VARCHAR(16) NOT NULL,
     -- người nhận
@@ -106,7 +104,6 @@ CREATE TABLE orders (
     receiver_phone         VARCHAR(16) NOT NULL,
     receiver_address       TEXT NOT NULL,
     receiver_province_id   VARCHAR(8),
-    receiver_district_id   VARCHAR(16),
     receiver_ward_id       VARCHAR(24),
     delivery_facility_id   VARCHAR(16),
     -- hàng hóa
@@ -148,9 +145,9 @@ CREATE TABLE orders (
 
 | merchant_id | merchant_name | merchant_type | pickup_address | pickup_ward_id | default_facility_id | contract_type | discount_pct | payout_cycle | status |
 |---|---|---|---|---|---|---|---|---|---|
-| MER_000845 | Shop Mỹ Phẩm Hoa Mai | SME | Số 12 ngõ 45 phố Huế, Hai Bà Trưng, Hà Nội | P01_D05_W03 | BC_P01_0007 | VOLUME | 0.1000 | DAILY | ACTIVE |
-| MER_001203 | Gia Dụng Minh Tâm (Shopee) | SME | 88 Lê Văn Việt, TP. Thủ Đức, TP.HCM | P79_D09_W02 | BC_P79_0110 | PAY_PER_USE | 0.0000 | DAILY | ACTIVE |
-| MER_002210 | Thời Trang Linh Chi | INDIVIDUAL | 25 Trần Phú, Hải Châu, Đà Nẵng | P48_D01_W05 | BC_P48_0003 | PAY_PER_USE | 0.0000 | WEEKLY | ACTIVE |
+| MER_000845 | Shop Mỹ Phẩm Hoa Mai | SME | Số 12 ngõ 45 phố Huế, Phường Hai Bà Trưng, Hà Nội | P01_W00256 | BC_P01_0007 | VOLUME | 0.1000 | DAILY | ACTIVE |
+| MER_001203 | Gia Dụng Minh Tâm (Shopee) | SME | 88 Lê Văn Việt, Phường Tăng Nhơn Phú, TP.HCM | P79_W26842 | BC_P79_0110 | PAY_PER_USE | 0.0000 | DAILY | ACTIVE |
+| MER_002210 | Thời Trang Linh Chi | INDIVIDUAL | 25 Trần Phú, Phường Hải Châu, Đà Nẵng | P48_W20242 | BC_P48_0003 | PAY_PER_USE | 0.0000 | WEEKLY | ACTIVE |
 
 `pricing_rules` (hai phiên bản → SCD2 trong `dim_pricing`)
 
@@ -176,9 +173,9 @@ CREATE TABLE orders (
 | shipment_id | VTP26101800001238 |
 | merchant_id / merchant_order_ref | MER_000845 / HM-20261018-0311 |
 | source_channel / service_type_id / status | OMS_WEB / EXPRESS / CREATED |
-| người gửi | Shop Mỹ Phẩm Hoa Mai · 0987654321 · Số 12 ngõ 45 phố Huế, Hai Bà Trưng, Hà Nội · P01 / P01_D05 / P01_D05_W03 |
+| người gửi | Shop Mỹ Phẩm Hoa Mai · 0987654321 · Số 12 ngõ 45 phố Huế, Phường Hai Bà Trưng, Hà Nội · P01 / P01_W00256 |
 | pickup_facility_id | BC_P01_0007 |
-| người nhận | Nguyễn Thị Lan · 0912345678 · 102 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM · P79 / P79_D01 / P79_D01_W04 |
+| người nhận | Nguyễn Thị Lan · 0912345678 · 102 Nguyễn Huệ, Phường Sài Gòn, TP.HCM · P79 / P79_W26740 |
 | delivery_facility_id | BC_P79_0042 |
 | hàng hóa | "Bộ dưỡng da 3 món" · COSMETICS · SL 3 · 1.200 g · 30×20×15 cm · dễ vỡ = true |
 | declared_value_vnd / cod_amount_vnd / fee_payer | 450.000 / 450.000 / SENDER |
@@ -202,12 +199,12 @@ INSERT (`op = "c"`), `after` đã rút gọn:
     "merchant_order_ref": "HM-20261018-0311", "source_channel": "OMS_WEB",
     "service_type_id": "EXPRESS", "status": "CREATED",
     "sender_name": "Shop Mỹ Phẩm Hoa Mai", "sender_phone": "0987654321",
-    "sender_address": "Số 12 ngõ 45 phố Huế, Hai Bà Trưng, Hà Nội",
-    "sender_province_id": "P01", "sender_district_id": "P01_D05", "sender_ward_id": "P01_D05_W03",
+    "sender_address": "Số 12 ngõ 45 phố Huế, Phường Hai Bà Trưng, Hà Nội",
+    "sender_province_id": "P01", "sender_ward_id": "P01_W00256",
     "pickup_facility_id": "BC_P01_0007",
     "receiver_name": "Nguyễn Thị Lan", "receiver_phone": "0912345678",
-    "receiver_address": "102 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM",
-    "receiver_province_id": "P79", "receiver_district_id": "P79_D01", "receiver_ward_id": "P79_D01_W04",
+    "receiver_address": "102 Nguyễn Huệ, Phường Sài Gòn, TP.HCM",
+    "receiver_province_id": "P79", "receiver_ward_id": "P79_W26740",
     "delivery_facility_id": "BC_P79_0042",
     "item_description": "Bộ dưỡng da 3 món", "item_category": "COSMETICS", "item_quantity": 3,
     "weight_gram": 1200, "length_cm": 30, "width_cm": 20, "height_cm": 15, "is_fragile": true,
@@ -436,14 +433,13 @@ Hợp đồng dữ liệu duy nhất sau chuẩn hóa, giống nhau dù đến t
   "partner_id": null,
   "service_type_id": "EXPRESS",
   "sender":   { "name": "Shop Mỹ Phẩm Hoa Mai", "phone": "0987654321",
-                "province_id": "P01", "district_id": "P01_D05", "ward_id": "P01_D05_W03",
-                "address_raw": "Số 12 ngõ 45 phố Huế, Hai Bà Trưng, Hà Nội",
-                "address_match_score": 1.0 },
+                "province_id": "P01", "ward_id": "P01_W00256",
+                "address_raw": "Số 12 ngõ 45 phố Huế, Phường Hai Bà Trưng, Hà Nội",
+                "address_scheme": "2025", "legacy_ward_id": null, "address_match_score": 1.0 },
   "receiver": { "name": "Nguyễn Thị Lan", "phone": "0912345678",
-                "province_id": "P79", "district_id": "P79_D01", "ward_id": "P79_D01_W04",
-                "new_province_code": "79", "new_ward_code": "26734",
-                "address_raw": "102 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM",
-                "address_match_score": 0.97 },
+                "province_id": "P79", "ward_id": "P79_W26740",
+                "address_raw": "102 Nguyễn Huệ, Phường Sài Gòn, TP.HCM",
+                "address_scheme": "2025", "legacy_ward_id": null, "address_match_score": 1.0 },
   "pickup_facility_id": "BC_P01_0007",
   "delivery_facility_id": "BC_P79_0042",
   "parcel": { "item_category": "COSMETICS", "item_quantity": 3, "is_fragile": true,
@@ -478,6 +474,16 @@ Các sự kiện vòng đời canonical khác sinh ra từ cập nhật OMS:
 { "event_type": "order_cancelled", "shipment_id": "VTP26101800001303",
   "event_time": "2026-10-18T09:40:10+07:00", "source_channel": "OMS_APP",
   "cancel_reason": "MERCHANT_REQUEST" }
+```
+
+Ví dụ địa chỉ viết theo địa giới cũ (đơn Shopee §2.1, `"P. Nam Dương, Q. Hải Châu, Đà Nẵng"`):
+Nam Dương là tên cũ của Phường Phước Ninh (cũ), nay thuộc Phường Hải Châu (mới):
+
+```json
+{ "receiver": { "province_id": "P48", "ward_id": "P48_W20242",
+                "address_raw": "15 Nguyễn Văn Linh, P. Nam Dương, Q. Hải Châu, Đà Nẵng",
+                "address_scheme": "LEGACY", "legacy_ward_id": "P48_D492_W20242",
+                "address_match_score": 0.93 } }
 ```
 
 Ví dụ lệch cước:
@@ -689,9 +695,8 @@ phát sự kiện.
 
 ## 9. S9 — Dữ liệu tham chiếu tĩnh
 
-Các dim hiện có (`dim_province`, `dim_district`, `dim_ward`, `dim_region`, `dim_branch`,
-`dim_facility`, `dim_service_type`, `dim_route`, `dim_partner`, `dim_shipper`, `dim_date`)
-giữ schema trong [schema_design.md](schema_design.md). Các bảng tham chiếu mới:
+Các dim (`dim_province`, `dim_ward`, `dim_region`, `dim_branch`, `dim_facility`,
+`dim_service_type`, `dim_route`, `dim_partner`, `dim_shipper`, `dim_date`)
 
 `ref_status_transition`: state machine được biểu diễn dưới dạng dữ liệu.
 
@@ -728,21 +733,47 @@ Mọi cặp (trạng thái, sự kiện) không có trong bảng được đưa 
 | RECEIVER_REFUSED | Từ chối nhận | RECEIVER | true |
 | DAMAGED_PACKAGE | Hàng hư hỏng | CARRIER | false |
 | OUTSIDE_DELIVERY_HOURS | Ngoài giờ giao | CARRIER | false |
+| SENDER_ABSENT | Người gửi vắng mặt | SENDER | true |
+| GOODS_NOT_READY | Hàng chưa sẵn sàng | SENDER | true |
+| PROHIBITED_ITEM | Hàng cấm gửi | SENDER | true |
 
-`ref_admin_unit_mapping`: 3 cấp cũ → 2 cấp sau tháng 7/2025 (mã mang tính minh họa)
+**Địa giới.** Lấy từ danh mục chính thức (gói `vietnamadminunits` 1.0.4, MIT, vendored ở
+`reference/admin_units/`). Hệ thống dùng **địa giới mới 2 cấp (từ 7/2025) làm chuẩn**:
 
-| old_province_id | old_district_id | old_ward_id | old_ward_name | new_province_code | new_province_name | new_ward_code | new_ward_name |
-|---|---|---|---|---|---|---|---|
-| P79 | P79_D01 | P79_D01_W04 | Phường Bến Nghé | 79 | Thành phố Hồ Chí Minh | 26734 | Phường Sài Gòn |
-| P74 | P74_D02 | P74_D02_W01 | Phường Phú Cường | 79 | Thành phố Hồ Chí Minh | 25747 | Phường Thủ Dầu Một |
+- `dim_province`: 34 tỉnh (`P79`). `dim_ward`: 3.321 xã (`P79_W26740`), thêm `ward_type`
+  (`PHUONG` / `XA` / `DAC_KHU`), `province_id`, `is_remote`.
+- `is_remote` xét ở cấp xã: xã nằm trên phần đất của tỉnh cũ vùng xa (vd Tuyên Quang mới chỉ
+  có phần Hà Giang cũ là vùng xa). `dim_province.is_remote` = mọi xã của tỉnh đều vùng xa.
+- `post_code` vẫn giả lập (danh mục chính thức không có mã bưu chính).
+- OMS (S1) chọn địa chỉ theo danh mục mới; S2 / S3 nhận địa chỉ viết theo cả địa giới cũ lẫn mới.
 
-`ref_address_alias`: từ điển phục vụ chuẩn hóa
+Địa giới cũ (63 tỉnh, 3 cấp) chỉ còn trong hai bảng ref dưới, dùng để chuẩn hóa địa chỉ cũ. ID cũ:
+`P79` / `P79_D760` / `P79_D760_W26740`. Mã tỉnh cũ trùng số với tỉnh mới nhưng khác phạm vi
+(`P79` cũ chưa gồm Bình Dương, Bà Rịa – Vũng Tàu), nên chỉ xuất hiện ở cột `old_*` / level `*_LEGACY`.
 
-| alias | normalized | level |
-|---|---|---|
-| TP HCM, TPHCM, HCM, Sài Gòn | Thành phố Hồ Chí Minh | PROVINCE |
-| Q10, Q.10, Quận 10 | Quận 10 | DISTRICT |
-| P.10, F10, Phường 10 | Phường 10 | WARD |
+`ref_admin_unit_mapping`: mỗi xã cũ → xã mới chứa nó. Xã cũ bị chia cho nhiều xã mới
+(`is_divided = true`, 471 xã) được ánh xạ về xã mới mặc định của nguồn dữ liệu; **bộ giả lập không
+sinh địa chỉ cũ thuộc các xã này**, nên với dữ liệu giả lập, cũ → mới luôn có đúng một đáp án.
+
+| old_province_id | old_province_name | old_district_id | old_district_name | old_ward_id | old_ward_name | new_province_id | new_ward_id | new_ward_name | is_divided |
+|---|---|---|---|---|---|---|---|---|---|
+| P79 | Thành phố Hồ Chí Minh | P79_D760 | Quận 1 | P79_D760_W26740 | Phường Bến Nghé | P79 | P79_W26740 | Phường Sài Gòn | false |
+| P74 | Tỉnh Bình Dương | P74_D718 | Thành phố Thủ Dầu Một | P74_D718_W25747 | Phường Phú Cường | P79 | P79_W25747 | Phường Thủ Dầu Một | false |
+
+`ref_address_alias`: từ điển phục vụ chuẩn hóa. `alias` là khóa đã chuẩn hóa (chữ thường, bỏ
+dấu, bỏ khoảng trắng và dấu câu: "TP. HCM" → `tphcm`), gồm tên đầy đủ, tên ngắn, tên cũ và
+dạng viết tắt tiền tố (TP / Q / P / F / TX / TT…). `level` = `PROVINCE` / `WARD` (địa giới mới,
+`target_id` là ID dim) hoặc `PROVINCE_LEGACY` / `DISTRICT_LEGACY` / `WARD_LEGACY` (địa giới cũ,
+`target_id` là `old_*_id` của mapping). Alias cấp xã/huyện **không duy nhất** ("Phường 10" có ở
+nhiều quận), bước chuẩn hóa phải lọc theo cấp cha đã khớp.
+
+| alias | level | target_id | target_name |
+|---|---|---|---|
+| tphcm | PROVINCE | P79 | Thành phố Hồ Chí Minh |
+| tphcm | PROVINCE_LEGACY | P79 | Thành phố Hồ Chí Minh |
+| psaigon | WARD | P79_W26740 | Phường Sài Gòn |
+| q10 | DISTRICT_LEGACY | P79_D771 | Quận 10 |
+| p10 | WARD_LEGACY | P79_D771_W27178 | Phường 10 |
 
 ---
 

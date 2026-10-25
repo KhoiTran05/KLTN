@@ -1,0 +1,10 @@
+reason_code,reason_name_vi,category,is_customer_fault
+RECEIVER_ABSENT,Người nhận vắng nhà,RECEIVER,true
+PHONE_NOT_ANSWERED,Không liên lạc được,RECEIVER,true
+WRONG_ADDRESS,Sai địa chỉ,SENDER,true
+RECEIVER_REFUSED,Từ chối nhận,RECEIVER,true
+DAMAGED_PACKAGE,Hàng hư hỏng,CARRIER,false
+OUTSIDE_DELIVERY_HOURS,Ngoài giờ giao,CARRIER,false
+SENDER_ABSENT,Người gửi vắng mặt,SENDER,true
+GOODS_NOT_READY,Hàng chưa sẵn sàng,SENDER,true
+PROHIBITED_ITEM,Hàng cấm gửi,SENDER,true

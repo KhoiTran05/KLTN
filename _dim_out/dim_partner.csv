@@ -1,0 +1,51 @@
+partner_id,partner_name,partner_type,contract_type,discount_rate,api_integration,contact_email,is_active
+SHOPEE,Shopee,ECOMMERCE_PLATFORM,VOLUME,0.0692,true,logistics@shopee.com,true
+LAZADA,Lazada,ECOMMERCE_PLATFORM,FIXED,0.0074,true,logistics@lazada.com,true
+TIKI,Tiki,ECOMMERCE_PLATFORM,VOLUME,0.1195,true,logistics@tiki.com,true
+TIKTOK_SHOP,Tiktok Shop,ECOMMERCE_PLATFORM,PAY_PER_USE,0.1901,true,logistics@tiktok_shop.com,true
+SENDO,Sendo,ECOMMERCE_PLATFORM,VOLUME,0.0153,true,logistics@sendo.com,true
+RETAIL,Retail,ECOMMERCE_PLATFORM,PAY_PER_USE,0.1456,true,logistics@retail.com,true
+PARTNER_006,Partner 006,ECOMMERCE_PLATFORM,VOLUME,0.0528,true,logistics@partner_006.com,true
+PARTNER_007,Partner 007,ECOMMERCE_PLATFORM,FIXED,0.1507,true,logistics@partner_007.com,true
+PARTNER_008,Partner 008,RETAIL,FIXED,0.1183,false,logistics@partner_008.com,true
+PARTNER_009,Partner 009,RETAIL,PAY_PER_USE,0.1074,false,logistics@partner_009.com,true
+PARTNER_010,Partner 010,RETAIL,PAY_PER_USE,0.2225,false,logistics@partner_010.com,true
+PARTNER_011,Partner 011,RETAIL,VOLUME,0.2352,false,logistics@partner_011.com,true
+PARTNER_012,Partner 012,SME,FIXED,0.1527,false,logistics@partner_012.com,true
+PARTNER_013,Partner 013,RETAIL,FIXED,0.2016,false,logistics@partner_013.com,true
+PARTNER_014,Partner 014,ECOMMERCE_PLATFORM,FIXED,0.2176,true,logistics@partner_014.com,true
+PARTNER_015,Partner 015,SME,PAY_PER_USE,0.2089,false,logistics@partner_015.com,true
+PARTNER_016,Partner 016,ENTERPRISE,VOLUME,0.1505,false,logistics@partner_016.com,true
+PARTNER_017,Partner 017,RETAIL,PAY_PER_USE,0.1879,false,logistics@partner_017.com,true
+PARTNER_018,Partner 018,ENTERPRISE,FIXED,0.113,false,logistics@partner_018.com,true
+PARTNER_019,Partner 019,SME,PAY_PER_USE,0.1033,false,logistics@partner_019.com,true
+PARTNER_020,Partner 020,ENTERPRISE,VOLUME,0.2465,false,logistics@partner_020.com,true
+PARTNER_021,Partner 021,RETAIL,VOLUME,0.1584,false,logistics@partner_021.com,true
+PARTNER_022,Partner 022,ECOMMERCE_PLATFORM,PAY_PER_USE,0.0814,true,logistics@partner_022.com,true
+PARTNER_023,Partner 023,SME,VOLUME,0.1517,false,logistics@partner_023.com,true
+PARTNER_024,Partner 024,SME,PAY_PER_USE,0.1531,false,logistics@partner_024.com,true
+PARTNER_025,Partner 025,ECOMMERCE_PLATFORM,FIXED,0.107,true,logistics@partner_025.com,true
+PARTNER_026,Partner 026,SME,PAY_PER_USE,0.2143,false,logistics@partner_026.com,true
+PARTNER_027,Partner 027,ECOMMERCE_PLATFORM,PAY_PER_USE,0.0962,true,logistics@partner_027.com,true
+PARTNER_028,Partner 028,ENTERPRISE,PAY_PER_USE,0.0358,false,logistics@partner_028.com,true
+PARTNER_029,Partner 029,ECOMMERCE_PLATFORM,VOLUME,0.1245,true,logistics@partner_029.com,true
+PARTNER_030,Partner 030,ECOMMERCE_PLATFORM,FIXED,0.2081,true,logistics@partner_030.com,true
+PARTNER_031,Partner 031,SME,VOLUME,0.2241,false,logistics@partner_031.com,true
+PARTNER_032,Partner 032,ECOMMERCE_PLATFORM,FIXED,0.1657,true,logistics@partner_032.com,true
+PARTNER_033,Partner 033,ENTERPRISE,VOLUME,0.0529,false,logistics@partner_033.com,true
+PARTNER_034,Partner 034,ECOMMERCE_PLATFORM,VOLUME,0.1087,true,logistics@partner_034.com,true
+PARTNER_035,Partner 035,ECOMMERCE_PLATFORM,VOLUME,0.2323,true,logistics@partner_035.com,true
+PARTNER_036,Partner 036,RETAIL,FIXED,0.1916,false,logistics@partner_036.com,true
+PARTNER_037,Partner 037,ENTERPRISE,PAY_PER_USE,0.0644,false,logistics@partner_037.com,true
+PARTNER_038,Partner 038,SME,PAY_PER_USE,0.0308,false,logistics@partner_038.com,true
+PARTNER_039,Partner 039,ENTERPRISE,PAY_PER_USE,0.1584,false,logistics@partner_039.com,true
+PARTNER_040,Partner 040,SME,VOLUME,0.1989,false,logistics@partner_040.com,true
+PARTNER_041,Partner 041,RETAIL,VOLUME,0.2329,false,logistics@partner_041.com,true
+PARTNER_042,Partner 042,ECOMMERCE_PLATFORM,PAY_PER_USE,0.0858,true,logistics@partner_042.com,true
+PARTNER_043,Partner 043,SME,PAY_PER_USE,0.1605,false,logistics@partner_043.com,true
+PARTNER_044,Partner 044,SME,VOLUME,0.0559,false,logistics@partner_044.com,true
+PARTNER_045,Partner 045,ECOMMERCE_PLATFORM,FIXED,0.0219,true,logistics@partner_045.com,true
+PARTNER_046,Partner 046,ECOMMERCE_PLATFORM,FIXED,0.1851,true,logistics@partner_046.com,true
+PARTNER_047,Partner 047,ENTERPRISE,PAY_PER_USE,0.2355,false,logistics@partner_047.com,true
+PARTNER_048,Partner 048,RETAIL,VOLUME,0.2133,false,logistics@partner_048.com,true
+PARTNER_049,Partner 049,SME,PAY_PER_USE,0.1842,false,logistics@partner_049.com,true

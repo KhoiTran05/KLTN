@@ -1,0 +1,35 @@
+province_id,province_code,province_name,province_name_short,region_id,is_remote,created_at
+P01,01,Thành phố Hà Nội,Hà Nội,DBSH,false,2018-01-01T00:00:00
+P04,04,Tỉnh Cao Bằng,Cao Bằng,DONG_BAC,true,2018-01-01T00:00:00
+P08,08,Tỉnh Tuyên Quang,Tuyên Quang,DONG_BAC,false,2018-01-01T00:00:00
+P11,11,Tỉnh Điện Biên,Điện Biên,TAY_BAC,true,2018-01-01T00:00:00
+P12,12,Tỉnh Lai Châu,Lai Châu,TAY_BAC,true,2018-01-01T00:00:00
+P14,14,Tỉnh Sơn La,Sơn La,TAY_BAC,false,2018-01-01T00:00:00
+P15,15,Tỉnh Lào Cai,Lào Cai,TAY_BAC,false,2018-01-01T00:00:00
+P19,19,Tỉnh Thái Nguyên,Thái Nguyên,DONG_BAC,false,2018-01-01T00:00:00
+P20,20,Tỉnh Lạng Sơn,Lạng Sơn,DONG_BAC,false,2018-01-01T00:00:00
+P22,22,Tỉnh Quảng Ninh,Quảng Ninh,DONG_BAC,false,2018-01-01T00:00:00
+P24,24,Tỉnh Bắc Ninh,Bắc Ninh,DONG_BAC,false,2018-01-01T00:00:00
+P25,25,Tỉnh Phú Thọ,Phú Thọ,DONG_BAC,false,2018-01-01T00:00:00
+P31,31,Thành phố Hải Phòng,Hải Phòng,DBSH,false,2018-01-01T00:00:00
+P33,33,Tỉnh Hưng Yên,Hưng Yên,DBSH,false,2018-01-01T00:00:00
+P37,37,Tỉnh Ninh Bình,Ninh Bình,DBSH,false,2018-01-01T00:00:00
+P38,38,Tỉnh Thanh Hóa,Thanh Hóa,BAC_TRUNG_BO,false,2018-01-01T00:00:00
+P40,40,Tỉnh Nghệ An,Nghệ An,BAC_TRUNG_BO,false,2018-01-01T00:00:00
+P42,42,Tỉnh Hà Tĩnh,Hà Tĩnh,BAC_TRUNG_BO,false,2018-01-01T00:00:00
+P44,44,Tỉnh Quảng Trị,Quảng Trị,BAC_TRUNG_BO,false,2018-01-01T00:00:00
+P46,46,Thành phố Huế,Huế,BAC_TRUNG_BO,false,2018-01-01T00:00:00
+P48,48,Thành phố Đà Nẵng,Đà Nẵng,NAM_TRUNG_BO,false,2018-01-01T00:00:00
+P51,51,Tỉnh Quảng Ngãi,Quảng Ngãi,NAM_TRUNG_BO,false,2018-01-01T00:00:00
+P52,52,Tỉnh Gia Lai,Gia Lai,NAM_TRUNG_BO,false,2018-01-01T00:00:00
+P56,56,Tỉnh Khánh Hòa,Khánh Hòa,NAM_TRUNG_BO,false,2018-01-01T00:00:00
+P66,66,Tỉnh Đắk Lắk,Đắk Lắk,TAY_NGUYEN,false,2018-01-01T00:00:00
+P68,68,Tỉnh Lâm Đồng,Lâm Đồng,TAY_NGUYEN,false,2018-01-01T00:00:00
+P75,75,Tỉnh Đồng Nai,Đồng Nai,DONG_NAM_BO,false,2018-01-01T00:00:00
+P79,79,Thành phố Hồ Chí Minh,TP.HCM,DONG_NAM_BO,false,2018-01-01T00:00:00
+P80,80,Tỉnh Tây Ninh,Tây Ninh,TAY_NAM_BO,false,2018-01-01T00:00:00
+P82,82,Tỉnh Đồng Tháp,Đồng Tháp,TAY_NAM_BO,false,2018-01-01T00:00:00
+P86,86,Tỉnh Vĩnh Long,Vĩnh Long,TAY_NAM_BO,false,2018-01-01T00:00:00
+P91,91,Tỉnh An Giang,An Giang,TAY_NAM_BO,false,2018-01-01T00:00:00
+P92,92,Thành phố Cần Thơ,Cần Thơ,TAY_NAM_BO,false,2018-01-01T00:00:00
+P96,96,Tỉnh Cà Mau,Cà Mau,TAY_NAM_BO,true,2018-01-01T00:00:00

@@ -1,0 +1,21 @@
+service_type_id,service_name,service_code,speed_tier,sla_inner_city_days,sla_same_province_days,sla_inter_province_days,sla_remote_days,max_weight_kg,max_size_cm3,supports_cod,base_price_vnd,is_active
+SAMEDAY,Giao trong ngày,SD,SAMEDAY,0,1,1,2,30.0,500000,true,60000,true
+EXPRESS,Chuyển phát nhanh,EXP,EXPRESS,1,1,2,4,30.0,500000,true,35000,true
+NEXTDAY,Giao hôm sau,ND,NEXTDAY,1,1,2,3,30.0,500000,true,30000,true
+STANDARD,Tiêu chuẩn,STD,STANDARD,2,2,4,6,30.0,500000,true,22000,true
+ECONOMY,Tiết kiệm,ECO,ECONOMY,3,3,5,8,30.0,500000,true,16000,true
+SAMEDAY_1,Giao trong ngày _1,SD_1,SAMEDAY,0,1,1,2,30.0,500000,true,60000,true
+EXPRESS_1,Chuyển phát nhanh _1,EXP_1,EXPRESS,1,1,2,4,30.0,500000,true,35000,true
+NEXTDAY_1,Giao hôm sau _1,ND_1,NEXTDAY,1,1,2,3,30.0,500000,true,30000,true
+STANDARD_1,Tiêu chuẩn _1,STD_1,STANDARD,2,2,4,6,30.0,500000,true,22000,true
+ECONOMY_1,Tiết kiệm _1,ECO_1,ECONOMY,3,3,5,8,30.0,500000,true,16000,true
+SAMEDAY_2,Giao trong ngày _2,SD_2,SAMEDAY,0,1,1,2,30.0,500000,true,60000,true
+EXPRESS_2,Chuyển phát nhanh _2,EXP_2,EXPRESS,1,1,2,4,30.0,500000,true,35000,true
+NEXTDAY_2,Giao hôm sau _2,ND_2,NEXTDAY,1,1,2,3,30.0,500000,true,30000,true
+STANDARD_2,Tiêu chuẩn _2,STD_2,STANDARD,2,2,4,6,30.0,500000,true,22000,true
+ECONOMY_2,Tiết kiệm _2,ECO_2,ECONOMY,3,3,5,8,30.0,500000,true,16000,true
+SAMEDAY_3,Giao trong ngày _3,SD_3,SAMEDAY,0,1,1,2,30.0,500000,true,60000,true
+EXPRESS_3,Chuyển phát nhanh _3,EXP_3,EXPRESS,1,1,2,4,30.0,500000,true,35000,true
+NEXTDAY_3,Giao hôm sau _3,ND_3,NEXTDAY,1,1,2,3,30.0,500000,true,30000,true
+STANDARD_3,Tiêu chuẩn _3,STD_3,STANDARD,2,2,4,6,30.0,500000,true,22000,true
+ECONOMY_3,Tiết kiệm _3,ECO_3,ECONOMY,3,3,5,8,30.0,500000,true,16000,true

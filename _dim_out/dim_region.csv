@@ -1,0 +1,9 @@
+region_id,region_name,region_code,headquarter_province_id
+TAY_BAC,Tây Bắc Bộ,TB,P15
+DONG_BAC,Đông Bắc Bộ,DB,P19
+DBSH,Đồng bằng sông Hồng,HH,P01
+BAC_TRUNG_BO,Bắc Trung Bộ,BTB,P40
+NAM_TRUNG_BO,Duyên hải Nam Trung Bộ,NTB,P48
+TAY_NGUYEN,Tây Nguyên,TN,P66
+DONG_NAM_BO,Đông Nam Bộ,DNB,P79
+TAY_NAM_BO,Đồng bằng sông Cửu Long,TNB,P92

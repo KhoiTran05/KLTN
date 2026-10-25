@@ -1,0 +1,16 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "plugin.name": "pgoutput",
+  "database.hostname": "postgres",
+  "database.port": "5432",
+  "database.user": "oms",
+  "database.password": "oms",
+  "database.dbname": "oms",
+  "topic.prefix": "oms",
+  "table.include.list": "public.merchants,public.pricing_rules,public.sla_config,public.orders",
+  "publication.name": "oms_publication",
+  "publication.autocreate.mode": "disabled",
+  "slot.name": "oms_slot",
+  "decimal.handling.mode": "double",
+  "tombstones.on.delete": "false"
+}

@@ -4,8 +4,8 @@ import csv
 import io
 import os
 
-from catalog import SEED, build_catalog
-from reference import build_reference
+from simulation.reference.catalog import SEED, build_catalog
+from simulation.reference.reference import build_reference
 
 
 def _cell(v) -> str:

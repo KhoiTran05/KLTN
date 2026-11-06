@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from datetime import date, timedelta
 
-import admin_units
+from simulation.reference import admin_units
 
 SEED = 42
 

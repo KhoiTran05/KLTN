@@ -102,6 +102,20 @@ Khách hàng luôn thấy cước dự kiến trước khi xác nhận, nên cư
 `pricing_rules` (OMS) là bảng giá duy nhất; bảng này được CDC sang `dim_pricing` (SCD2) và mọi
 kênh đều đọc cùng một bộ quy tắc.
 
+Vùng giá `zone_type` xác định theo địa giới mới (không còn cấp quận), xét theo thứ tự:
+
+| Vùng | Điều kiện |
+|---|---|
+| `REMOTE` | Xã nhận là vùng xa (`dim_ward.is_remote`); cộng thêm `remote_area_fee` |
+| `INTER_PROVINCE` | Khác tỉnh |
+| `INNER_CITY` | Cùng tỉnh và cả xã gửi lẫn xã nhận đều là phường (`ward_type = PHUONG`) |
+| `SAME_PROVINCE` | Cùng tỉnh, còn lại |
+
+Thời hạn giao cam kết `promised_delivery_at` = thời điểm tạo + `sla_config.total_hours`; đơn tạo
+sau `cutoff_time` tính từ 00:00 hôm sau. Trong mô phỏng, thời hạn được nén theo `TIME_SCALE`
+(chia `total_hours` cho hệ số nén) và chỉ áp `cutoff_time` khi không nén, vì khi nén một ngày chỉ
+còn vài chục giây thật.
+
 Bước chuẩn hóa **giữ nguyên cước từ nguồn** (con số khách đã đồng ý) và tính lại theo phiên
 bản `dim_pricing` có hiệu lực tại `created_at`. Nếu lệch thì gắn `FEE_MISMATCH` kèm cả hai giá
 trị và độ chênh; bản ghi vẫn đi tiếp. Bộ giả lập tiêm các lỗi cước có gắn nhãn (sai phiên bản

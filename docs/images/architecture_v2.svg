@@ -1,0 +1,360 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1160" viewBox="0 0 1800 1160" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563EB"/></marker>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#EA580C"/></marker>
+    <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#DC2626"/></marker>
+    <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16A34A"/></marker>
+    <marker id="aK" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
+  </defs>
+  <style>
+    .grp{fill:#F6F8FB;stroke:#94A3B8;stroke-width:1.5}
+    .box{fill:#FFFFFF;stroke:#64748B;stroke-width:1.2}
+    .gt{font-size:15px;font-weight:700;fill:#0F172A}
+    .gs{font-size:11.5px;fill:#475569}
+    .ct{font-size:13px;font-weight:700;fill:#0F172A}
+    .cb{font-size:11.5px;fill:#334155}
+    .pill{fill:#E2E8F0;stroke:#475569;stroke-width:1}
+    .pt{font-size:11.5px;font-family:Consolas, monospace;fill:#0F172A}
+    .lbl{font-size:10.5px;fill:#475569;font-style:italic}
+    .new{fill:#DC2626}
+    .nt{font-size:9px;font-weight:700;fill:#FFFFFF}
+    .sB{stroke:#2563EB;stroke-width:2;fill:none}
+    .sO{stroke:#EA580C;stroke-width:2;fill:none}
+    .sR{stroke:#DC2626;stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+    .sP{stroke:#7C3AED;stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+    .sG{stroke:#16A34A;stroke-width:1.6;fill:none;stroke-dasharray:5 4}
+    .sK{stroke:#6B7280;stroke-width:1.8;fill:none;stroke-dasharray:2 3}
+  </style>
+
+  <rect width="1800" height="1160" fill="#FFFFFF"/>
+  <text x="900" y="40" text-anchor="middle" font-size="22" font-weight="700" fill="#0F172A">Kiến trúc hệ thống xử lý và phân tích dữ liệu vận đơn thời gian thực (bản cập nhật)</text>
+
+  <!-- ============ A. NGUỒN DỮ LIỆU ============ -->
+  <rect class="grp" x="20" y="70" width="270" height="970" rx="10"/>
+  <text class="gt" x="35" y="95">Nguồn dữ liệu</text>
+  <text class="gs" x="35" y="113">Bộ giả lập chung: 1 simulator</text>
+  <text class="gs" x="35" y="126">phát bản ghi qua đúng kênh của nguồn</text>
+
+  <g>
+    <rect class="box" x="32" y="133" width="246" height="94" rx="7"/><rect x="32" y="133" width="6" height="94" fill="#0F766E"/>
+    <text class="ct" x="46" y="155">S1 · OMS (PostgreSQL)</text>
+    <text class="cb" x="46" y="174">Giả lập tạo / sửa / hủy đơn web, app</text>
+    <text class="cb" x="46" y="191">Bảng merchants, pricing_rules, sla_config</text>
+    <text class="lbl" x="46" y="214">gốc đơn hàng + danh mục</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="246" width="246" height="94" rx="7"/><rect x="32" y="246" width="6" height="94" fill="#0F766E"/>
+    <text class="ct" x="46" y="268">S2 · Partner API</text>
+    <text class="cb" x="46" y="287">Sàn TMĐT đẩy đơn (Shoppe + Tiktok)</text>
+    <text class="cb" x="46" y="304">FastAPI gateway: kiểm tra + báo giá</text>
+    <text class="lbl" x="46" y="327">gốc đơn hàng</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="359" width="246" height="94" rx="7"/><rect x="32" y="359" width="6" height="94" fill="#0F766E"/>
+    <text class="ct" x="46" y="381">S3 · File CSV / Excel</text>
+    <text class="cb" x="46" y="400">Shop nhập đơn hàng loạt</text>
+    <text class="cb" x="46" y="417">header tiếng Việt, địa chỉ tự do</text>
+    <text class="lbl" x="46" y="440">gốc đơn hàng</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="472" width="246" height="94" rx="7"/><rect x="32" y="472" width="6" height="94" fill="#1D4ED8"/>
+    <text class="ct" x="46" y="494">S4 · PDA quét mã</text>
+    <text class="cb" x="46" y="513">Quét tại bưu cục / hub</text>
+    <text class="cb" x="46" y="530">kể cả chuyển hoàn</text>
+    <text class="lbl" x="46" y="553">thay đổi trạng thái</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="585" width="246" height="94" rx="7"/><rect x="32" y="585" width="6" height="94" fill="#1D4ED8"/>
+    <text class="ct" x="46" y="607">S5 · App shipper</text>
+    <text class="cb" x="46" y="626">Lấy / giao hàng, cân nặng thực tế</text>
+    <text class="cb" x="46" y="643">COD đã thu, nộp tiền cuối ca</text>
+    <text class="lbl" x="46" y="666">thay đổi trạng thái</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="698" width="246" height="94" rx="7"/><rect x="32" y="698" width="6" height="94" fill="#B45309"/>
+    <text class="ct" x="46" y="720">S7 · Hệ thống tài chính</text>
+    <text class="cb" x="46" y="739">Cước chốt / điều chỉnh, phí hoàn</text>
+    <text class="cb" x="46" y="756">đối soát với shop (theo kỳ)</text>
+    <text class="lbl" x="46" y="779">ghi nhận tiền</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="811" width="246" height="94" rx="7"/><rect x="32" y="811" width="6" height="94" fill="#64748B"/>
+    <text class="ct" x="46" y="833">S9 · Dữ liệu tham chiếu</text>
+    <text class="cb" x="46" y="852">dim, ref_status_transition</text>
+    <text class="cb" x="46" y="869">địa giới 2025 + ánh xạ cũ → mới</text>
+    <text class="lbl" x="46" y="892">seed một lần</text>
+  </g>
+  <g>
+    <rect class="box" x="32" y="924" width="246" height="94" rx="7" style="stroke:#7C3AED;stroke-dasharray:5 3"/><rect x="32" y="924" width="6" height="94" fill="#7C3AED"/>
+    <text class="ct" x="46" y="946">sim_labels (ground truth)</text>
+    <text class="cb" x="46" y="965">Nhãn của mọi lỗi được tiêm</text>
+    <text class="cb" x="46" y="982">pipeline không đọc, chỉ phục vụ đánh giá</text>
+    <text class="lbl" x="46" y="1005">chỉ job đánh giá đọc</text>
+  </g>
+
+  <!-- ============ B. THU NHẬN ============ -->
+  <rect class="grp" x="320" y="70" width="290" height="970" rx="10"/>
+  <text class="gt" x="335" y="95">Thu nhận — Kafka</text>
+  <text class="gs" x="335" y="113">Strimzi / KRaft, message JSON</text>
+
+  <rect class="box" x="335" y="160" width="260" height="40" rx="6" style="stroke:#0F766E"/>
+  <text class="ct" x="347" y="185">Kafka Connect · Debezium CDC</text>
+
+  <rect class="pill" x="335" y="209" width="260" height="27" rx="13"/><text class="pt" x="350" y="227">oms.public.*</text>
+  <rect class="pill" x="335" y="280" width="260" height="27" rx="13"/><text class="pt" x="350" y="298">partner.orders.raw</text>
+  <rect class="pill" x="335" y="506" width="260" height="27" rx="13"/><text class="pt" x="350" y="524">logistics.tracking.events</text>
+  <rect class="pill" x="335" y="619" width="260" height="27" rx="13"/><text class="pt" x="350" y="637">logistics.shipper.events</text>
+  <rect class="pill" x="335" y="732" width="260" height="27" rx="13"/><text class="pt" x="350" y="750">logistics.financial.events</text>
+
+  <rect class="box" x="335" y="780" width="260" height="44" rx="6"/>
+  <text class="ct" x="347" y="800">Schema Registry</text>
+  <text class="cb" x="347" y="816">Kiểm soát thay đổi schema</text>
+
+  <!-- ============ C1. CHUẨN HÓA ============ -->
+  <rect class="grp" x="640" y="70" width="360" height="410" rx="10" style="stroke:#0F766E;stroke-width:2"/>
+  <text class="gt" x="655" y="95">Chuẩn hóa đơn hàng (nghiệp vụ 1)</text>
+  <rect class="box" x="655" y="103" width="330" height="85" rx="6" style="fill:#F0FDFA;stroke:#0F766E"/>
+  <text class="cb" x="665" y="120">Module dùng chung cho cả 3 kênh:</text>
+  <text class="cb" x="665" y="136">① Chuẩn hoá schema  ② Kiểm tra Data Quality</text>
+  <text class="cb" x="665" y="152">③ Chuẩn hóa địa chỉ (bí danh + ánh xạ địa chỉ 2 cấp)</text>
+  <text class="cb" x="665" y="168">④ Khử trùng lặp theo (merchant_id, merchant_order_ref)</text>
+  <text class="cb" x="665" y="184">⑤ Tính lại cước theo dim_pricing → flag FEE_MISMATCH</text>
+
+  <rect class="box" x="655" y="198" width="300" height="112" rx="6"/>
+  <text class="ct" x="667" y="220">Spark Streaming — đơn S1, S2</text>
+  <text class="cb" x="667" y="240">Đọc CDC orders + bản ghi gateway</text>
+  <text class="cb" x="667" y="257">cập nhật / hủy đơn → sự kiện vòng đời</text>
+  <text class="lbl" x="667" y="297">độ trễ: giây</text>
+
+  <rect class="box" x="655" y="332" width="300" height="90" rx="6"/>
+  <text class="ct" x="667" y="354">Import Batch — đơn S3</text>
+  <text class="cb" x="667" y="373">Airflow sensor (landing/) + Spark batch</text>
+  <text class="cb" x="667" y="390">báo cáo nhập theo file (nhận/từ chối/trùng)</text>
+  <text class="lbl" x="667" y="410">độ trễ: 1–5 phút</text>
+
+  <rect class="pill" x="650" y="440" width="200" height="27" rx="13" style="fill:#CCFBF1"/><text class="pt" x="662" y="458">logistics.orders.canonical</text>
+  <rect class="pill" x="862" y="440" width="128" height="27" rx="13" style="fill:#FEE2E2"/><text class="pt" x="874" y="458">orders.dlq</text>
+
+  <!-- ============ C2. STREAMING ============ -->
+  <rect class="grp" x="640" y="495" width="360" height="545" rx="10"/>
+  <text class="gt" x="672" y="522">Xử lý streaming</text>
+  <text class="gs" x="800" y="522">Spark Structured Streaming</text>
+  <rect x="650" y="508" width="14" height="515" rx="5" fill="#BFDBFE" stroke="#2563EB"/>
+
+  <rect class="box" x="690" y="535" width="295" height="80" rx="6" style="stroke:#EA580C"/>
+  <text class="ct" x="702" y="556">Nhánh Bronze (lưu thô)</text>
+  <text class="cb" x="702" y="575">ghi mọi topic → Iceberg, theo nguồn</text>
+  <text class="cb" x="702" y="592">kể cả CDC, DLQ (phục vụ kiểm toán, replay)</text>
+
+  <rect class="box" x="690" y="630" width="295" height="110" rx="6" style="stroke:#2563EB"/>
+  <text class="ct" x="702" y="651">Nhánh KPI không cần lưu trạng thái đơn</text>
+  <text class="cb" x="702" y="670">watermark + khử trùng lặp event_id</text>
+  <text class="cb" x="702" y="687">làm giàu (broadcast dim)</text>
+  <text class="cb" x="702" y="704">tổng hợp theo cửa sổ: sản lượng,</text>
+  <text class="cb" x="702" y="721">doanh thu, COD, tỷ lệ giao lần đầu, ...</text>
+
+  <rect class="box" x="690" y="755" width="295" height="270" rx="6" style="stroke:#2563EB"/>
+  <text class="ct" x="702" y="776">Nhánh KPI theo trạng thái vận đơn</text>
+  <text class="lbl" x="702" y="792">khóa shipment_id</text>
+  <text class="cb" x="702" y="814">• State machine theo bảng</text>
+  <text class="cb" x="714" y="830">ref_status_transition </text>
+  <text class="cb" x="702" y="850">• Deadline SLA dạng timestamp,</text>
+  <text class="cb" x="714" y="866">nén theo TIME_SCALE</text>
+  <text class="cb" x="702" y="886">• Cảnh báo: nguy cơ trễ SLA,</text>
+  <text class="cb" x="714" y="902">STUCK → LOST, sai tuyến, đơn ORPHAN</text>
+  <text class="cb" x="702" y="922">• Giữ tạm sự kiện đến trước đơn</text>
+  <rect class="pill" x="700" y="944" width="140" height="25" rx="12" style="fill:#FEE2E2"/><text class="pt" x="710" y="961">invalid_transitions</text>
+  <rect class="pill" x="850" y="944" width="125" height="25" rx="12" style="fill:#FEE2E2"/><text class="pt" x="868" y="961">late_events</text>
+  <!-- ============ D1. BATCH ============ -->
+  <rect class="grp" x="1030" y="70" width="410" height="290" rx="10" style="stroke:#EA580C"/>
+  <text class="gt" x="1045" y="95">Pipeline batch — Airflow (chu kỳ 2h)</text>
+  <rect class="box" x="1045" y="108" width="185" height="110" rx="6" style="stroke:#7C3AED"/>
+  <text class="ct" x="1055" y="129">Đánh giá</text>
+  <text class="cb" x="1055" y="148">join đầu ra với sim_labels</text>
+  <text class="cb" x="1055" y="165">precision / recall, tỷ lệ</text>
+  <text class="cb" x="1055" y="182">bắt lỗi DQ, lệch stream–</text>
+  <text class="cb" x="1055" y="199">batch, độ trễ</text>
+  <rect class="box" x="1245" y="108" width="185" height="110" rx="6"/>
+  <text class="ct" x="1255" y="129">Đối soát COD &amp; cước</text>
+  <text class="cb" x="1255" y="148">COD thu ↔ nộp ↔ trả shop</text>
+  <text class="cb" x="1255" y="165">cước dự kiến ↔ cước chốt</text>
+  <text class="cb" x="1255" y="182">(nghiệp vụ 7)</text>
+  <rect class="box" x="1045" y="232" width="185" height="116" rx="6" style="fill:#FFF7ED"/>
+  <text class="ct" x="1055" y="253">Dựng Silver</text>
+  <text class="cb" x="1055" y="272">Data Quality (Great Expectations)</text>
+  <text class="cb" x="1055" y="289">khử trùng lặp, làm giàu</text>
+  <text class="cb" x="1055" y="306">dim SCD2: merchant,</text>
+  <text class="cb" x="1055" y="323">pricing, SLA (từ CDC)</text>
+  <rect class="box" x="1245" y="232" width="185" height="116" rx="6" style="fill:#FFF7ED"/>
+  <text class="ct" x="1255" y="253">Dựng Gold</text>
+  <text class="cb" x="1255" y="272">fact Kimball, MERGE</text>
+  <text class="cb" x="1255" y="289">vận đơn, hành trình,</text>
+  <text class="cb" x="1255" y="306">lần giao, giao dịch tiền,</text>
+  <text class="cb" x="1255" y="323">tồn kho cơ sở</text>
+
+  <!-- ============ D2. LAKEHOUSE ============ -->
+  <rect class="grp" x="1030" y="375" width="410" height="260" rx="10" style="stroke:#EA580C"/>
+  <text class="gt" x="1045" y="597">Data Lakehouse — Iceberg (S3 + Glue)</text>
+  <text class="gs" x="1045" y="616">dev local: MinIO + REST catalog · vùng khác: landing/, sim_labels/, dim-seed/</text>
+  <g>
+    <ellipse cx="1110" cy="450" rx="45" ry="11" fill="#FED7AA" stroke="#9A3412"/>
+    <path d="M1065,450 v70 a45,11 0 0 0 90,0 v-70" fill="#FED7AA" stroke="#9A3412"/>
+    <ellipse cx="1110" cy="450" rx="45" ry="11" fill="#FDBA74" stroke="#9A3412"/>
+    <text x="1110" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#7C2D12">Bronze</text>
+  </g>
+  <g>
+    <ellipse cx="1235" cy="450" rx="45" ry="11" fill="#E5E7EB" stroke="#374151"/>
+    <path d="M1190,450 v70 a45,11 0 0 0 90,0 v-70" fill="#E5E7EB" stroke="#374151"/>
+    <ellipse cx="1235" cy="450" rx="45" ry="11" fill="#D1D5DB" stroke="#374151"/>
+    <text x="1235" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#1F2937">Silver</text>
+  </g>
+  <g>
+    <ellipse cx="1360" cy="450" rx="45" ry="11" fill="#FEF08A" stroke="#854D0E"/>
+    <path d="M1315,450 v70 a45,11 0 0 0 90,0 v-70" fill="#FEF08A" stroke="#854D0E"/>
+    <ellipse cx="1360" cy="450" rx="45" ry="11" fill="#FDE047" stroke="#854D0E"/>
+    <text x="1360" y="495" text-anchor="middle" font-size="14" font-weight="700" fill="#713F12">Gold</text>
+  </g>
+  <text class="cb" x="1110" y="552" text-anchor="middle">raw theo nguồn</text>
+  <text class="cb" x="1235" y="552" text-anchor="middle">sạch, chuẩn hóa</text>
+  <text class="cb" x="1360" y="552" text-anchor="middle">fact / dim</text>
+
+  <!-- ============ D3. PHỤC VỤ ============ -->
+  <rect class="grp" x="1030" y="650" width="410" height="390" rx="10" style="stroke:#2563EB"/>
+  <text class="gt" x="1045" y="675">Phục vụ</text>
+  <rect class="box" x="1045" y="685" width="385" height="195" rx="6" style="fill:#EFF6FF;stroke:#2563EB"/>
+  <text class="ct" x="1060" y="708" style="font-size:15px">ClickHouse — serving realtime</text>
+  <text class="cb" x="1060" y="732">• KPI theo cửa sổ (SummingMergeTree)</text>
+  <text class="cb" x="1060" y="752">• Trạng thái &amp; hành trình từng vận đơn</text>
+  <text class="cb" x="1060" y="772">• Cảnh báo SLA / bất thường</text>
+  <text class="cb" x="1060" y="792">• invalid_transitions, late_events</text>
+  <text class="lbl" x="1060" y="818">nguồn cho Grafana, Superset, Tracking API</text>
+  <rect class="box" x="1045" y="895" width="185" height="135" rx="6"/>
+  <text class="ct" x="1057" y="917">Athena / Trino</text>
+  <text class="cb" x="1057" y="937">truy vấn Iceberg Gold</text>
+  <text class="cb" x="1057" y="954">qua Glue catalog</text>
+  <text class="cb" x="1057" y="971">(ground truth batch)</text>
+  <rect class="box" x="1245" y="895" width="185" height="135" rx="6"/>
+  <text class="ct" x="1257" y="917">Tracking API</text>
+  <text class="cb" x="1257" y="937">FastAPI: tra cứu hành</text>
+  <text class="cb" x="1257" y="954">trình theo shipment_id</text>
+  <text class="cb" x="1257" y="971">(nghiệp vụ 3)</text>
+
+  <!-- ============ E. QUẢN TRỊ / TRỰC QUAN / GIÁM SÁT ============ -->
+  <rect class="grp" x="1470" y="70" width="310" height="225" rx="10" style="stroke:#16A34A"/>
+  <text class="gt" x="1485" y="95">DataHub</text>
+  <text class="cb" x="1485" y="120">Quản trị dữ liệu: catalog, lineage</text>
+  <text class="cb" x="1485" y="140">Thu metadata từ Postgres OMS,</text>
+  <text class="cb" x="1485" y="157">Kafka (+ Schema Registry), Iceberg,</text>
+  <text class="cb" x="1485" y="174">Airflow</text>
+  <text class="lbl" x="1485" y="200">lineage: nguồn S1–S7 → topic →</text>
+  <text class="lbl" x="1485" y="216">Bronze → Silver → Gold → dashboard</text>
+
+  <rect class="grp" x="1470" y="310" width="310" height="215" rx="10"/>
+  <text class="gt" x="1485" y="335">Trực quan hoá — BI</text>
+  <rect class="box" x="1490" y="350" width="270" height="155" rx="6"/>
+  <text class="ct" x="1502" y="374" style="font-size:15px">Superset</text>
+  <text class="cb" x="1502" y="397">Báo cáo phân tích (nghiệp vụ 9)</text>
+  <text class="cb" x="1502" y="416">sản lượng, SLA, doanh thu, COD,</text>
+  <text class="cb" x="1502" y="435">chất lượng dữ liệu theo nguồn</text>
+  <text class="lbl" x="1502" y="460">nguồn: ClickHouse (realtime)</text>
+  <text class="lbl" x="1502" y="477">+ Athena/Trino (Gold)</text>
+
+  <rect class="grp" x="1470" y="540" width="310" height="500" rx="10"/>
+  <text class="gt" x="1485" y="565">Giám sát &amp; cảnh báo</text>
+  <rect class="box" x="1490" y="585" width="270" height="105" rx="6"/>
+  <text class="ct" x="1502" y="608" style="font-size:15px">Prometheus</text>
+  <text class="cb" x="1502" y="630">thu &amp; lưu metric hệ thống:</text>
+  <text class="cb" x="1502" y="648">Kafka lag, Spark batch duration,</text>
+  <text class="cb" x="1502" y="666">Kafka Connect, gateway, ClickHouse</text>
+  <rect class="box" x="1490" y="770" width="230" height="150" rx="6"/>
+  <text class="ct" x="1502" y="793" style="font-size:15px">Grafana</text>
+  <text class="cb" x="1502" y="815">Bảng điều khiển vận hành</text>
+  <text class="cb" x="1502" y="833">realtime (auto-refresh)</text>
+  <text class="cb" x="1502" y="851">Cảnh báo nghiệp vụ (SLA,</text>
+  <text class="cb" x="1502" y="869">mất hàng) + cảnh báo hệ</text>
+  <text class="cb" x="1502" y="887">thống (lag, job dừng)</text>
+
+  <!-- ============ ĐƯỜNG NỐI ============ -->
+  <!-- S1 -> Debezium -> oms.public -> chuẩn hóa -->
+  <path class="sB" d="M278,180 H333" marker-end="url(#aB)"/>
+  <path class="sB" d="M465,200 V207" marker-end="url(#aB)"/>
+  <path class="sB" d="M595,222 H653" marker-end="url(#aB)"/>
+  <!-- S2 -> partner raw -> chuẩn hóa -->
+  <path class="sB" d="M278,293 H333" marker-end="url(#aB)"/>
+  <path class="sB" d="M595,293 H653" marker-end="url(#aB)"/>
+  <text class="lbl" x="285" y="287">REST</text>
+  <!-- S2 gateway từ chối -> DLQ -->
+  <!-- S3 -> import lô -->
+  <path class="sO" d="M278,406 H653" marker-end="url(#aO)"/>
+  <text class="lbl" x="335" y="398">file → landing/bulk_orders/ (S3 / MinIO)</text>
+  <!-- chuẩn hóa -> canonical / dlq -->
+  <path class="sB" d="M955,254 H972 V430"/>
+  <path class="sO" d="M955,377 H972"/>
+  <path class="sB" d="M972,430 H750 V438" marker-end="url(#aB)"/>
+  <path class="sR" d="M972,430 V438" marker-end="url(#aR)"/>
+  <text class="lbl" x="760" y="426">hợp lệ</text>
+  <text class="lbl" x="905" y="426" fill="#DC2626">từ chối</text>
+  <!-- canonical -> bus -->
+  <path class="sB" d="M657,467 V506" marker-end="url(#aB)"/>
+  <!-- dlq -> bronze -->
+  <path class="sR" d="M975,467 V533" marker-end="url(#aR)"/>
+  <!-- S4/S5/S7 -> topic -> bus -->
+  <path class="sB" d="M278,519 H333" marker-end="url(#aB)"/>
+  <path class="sB" d="M595,519 H648" marker-end="url(#aB)"/>
+  <path class="sB" d="M278,632 H333" marker-end="url(#aB)"/>
+  <path class="sB" d="M595,632 H648" marker-end="url(#aB)"/>
+  <path class="sB" d="M278,745 H333" marker-end="url(#aB)"/>
+  <path class="sB" d="M595,745 H648" marker-end="url(#aB)"/>
+  <!-- S9 -> bus (broadcast) -->
+  <path class="sK" d="M278,858 H648" marker-end="url(#aK)"/>
+  <text class="lbl" x="335" y="851">dim + ref (broadcast join, nạp định kỳ)</text>
+  <!-- bus -> branches -->
+  <path class="sB" d="M664,575 H688" marker-end="url(#aB)"/>
+  <path class="sB" d="M664,685 H688" marker-end="url(#aB)"/>
+  <path class="sB" d="M664,890 H688" marker-end="url(#aB)"/>
+  <!-- bronze -> lakehouse -->
+  <path class="sO" d="M985,575 H1048 V495 H1063" marker-end="url(#aO)"/>
+  <!-- KPI, stateful -> ClickHouse -->
+  <path class="sB" d="M985,700 H1043" marker-end="url(#aB)"/>
+  <path class="sB" d="M985,850 H1043" marker-end="url(#aB)"/>
+  <!-- batch medallion -->
+  <path class="sO" d="M1110,439 V350" marker-end="url(#aO)"/>
+  <path class="sO" d="M1215,348 V437" marker-end="url(#aO)"/>
+  <path class="sO" d="M1260,439 V350" marker-end="url(#aO)"/>
+  <path class="sO" d="M1360,348 V437" marker-end="url(#aO)"/>
+  <!-- ClickHouse -> Tracking API -->
+  <path class="sB" d="M1337,880 V893" marker-end="url(#aB)"/>
+  <!-- ClickHouse -> Superset, Grafana -->
+  <path class="sB" d="M1430,740 H1455 V430 H1488" marker-end="url(#aB)"/>
+  <path class="sB" d="M1430,845 H1488" marker-end="url(#aB)"/>
+  <!-- Athena -> Superset -->
+  <path class="sO" d="M1137,1030 V1036 H1462 V480 H1488" marker-end="url(#aO)"/>
+  <!-- Prometheus -> Grafana -->
+  <path class="sG" d="M1605,690 V768" marker-end="url(#aG)" style="stroke-dasharray:0"/>
+  <text class="lbl" x="1612" y="735">cung cấp metric</text>
+  <!-- metrics scraping -->
+  <path class="sG" d="M465,1040 V1070 M820,1040 V1070 M465,1070 H1745 V692" marker-end="url(#aG)"/>
+  <text class="lbl" x="1500" y="1063" fill="#16A34A">metrics scraping (Kafka, Spark, Connect, gateway)</text>
+  <!-- metadata -> DataHub -->
+  <path class="sG" d="M1440,160 H1468" marker-end="url(#aG)"/>
+  <path class="sG" d="M610,90 V60 H1600 V68" marker-end="url(#aG)"/>
+  <text class="lbl" x="1180" y="56" fill="#16A34A">metadata &amp; lineage (Postgres, Kafka, Iceberg, Airflow)</text>
+  <!-- sim_labels -> Đánh giá -->
+  <path class="sP" d="M278,990 H302 V1055 H1015 V163 H1043" marker-end="url(#aP)"/>
+  <text class="lbl" x="320" y="1050" fill="#7C3AED">nhãn ground truth (chỉ job đánh giá đọc)</text>
+
+  <!-- ============ CHÂN: TRIỂN KHAI + CHÚ THÍCH ============ -->
+  <rect class="grp" x="20" y="1085" width="700" height="65" rx="8"/>
+  <text class="ct" x="35" y="1108">Triển khai</text>
+  <text class="cb" x="35" y="1127">GitLab CI/CD → build image → ECR → EKS (Terraform, Helm, Spark Operator)</text>
+  <text class="cb" x="35" y="1143">Dev: Docker Compose (Kafka, Schema Registry, Postgres, Debezium, MinIO) — cùng code, khác cấu hình</text>
+
+  <rect class="grp" x="740" y="1085" width="1040" height="65" rx="8"/>
+  <path class="sB" d="M755,1108 H795" marker-end="url(#aB)"/><text class="cb" x="802" y="1112">luồng streaming (giây)</text>
+  <path class="sO" d="M950,1108 H990" marker-end="url(#aO)"/><text class="cb" x="997" y="1112">luồng batch / lưu trữ</text>
+  <path class="sR" d="M1135,1108 H1175" marker-end="url(#aR)"/><text class="cb" x="1182" y="1112">bản ghi lỗi → DLQ</text>
+  <path class="sK" d="M1305,1108 H1345" marker-end="url(#aK)"/><text class="cb" x="1352" y="1112">tham chiếu (dim/ref)</text>
+  <path class="sP" d="M755,1135 H795" marker-end="url(#aP)"/><text class="cb" x="802" y="1139">nhãn ground truth (đánh giá)</text>
+  <path class="sG" d="M985,1135 H1025" marker-end="url(#aG)"/><text class="cb" x="1032" y="1139">metadata / metric</text>
+</svg>

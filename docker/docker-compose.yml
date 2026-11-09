@@ -1,7 +1,7 @@
 # Môi trường dev local: docker compose -f docker/docker-compose.yml up -d
 # Trong mạng compose: kafka:29092, schema-registry:8081, postgres:5432, minio:9000.
 # Từ máy host:        localhost:9092, localhost:8081, localhost:5432, localhost:9000 (console :9001),
-#                     Kafka Connect localhost:8083, Kafka UI localhost:8080.
+#                     Kafka Connect localhost:8083, Kafka UI localhost:8080, Partner gateway localhost:8000.
 name: kltn
 
 services:
@@ -123,6 +123,39 @@ services:
               "--data", "@/register-oms.json", "http://connect:8083/connectors/oms/config"]
     restart: "no"
 
+  partner-gateway:
+    build:
+      context: ..
+      dockerfile: services/partner_gateway/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      OMS_DSN: postgresql://oms:oms@postgres:5432/oms
+      KAFKA_BOOTSTRAP: kafka:29092
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request as u; u.urlopen('http://localhost:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # Chạy tay: docker compose --profile sim run --rm simulator python -m simulation.oms_seed
+  #           docker compose --profile sim run --rm simulator python -m simulation.event_generator --duration 60
+  simulator:
+    profiles: ["sim"]
+    build:
+      context: ..
+      dockerfile: simulation/Dockerfile
+    depends_on:
+      partner-gateway:
+        condition: service_healthy
+    environment:
+      OMS_DSN: postgresql://oms:oms@postgres:5432/oms
+      GATEWAY_URL: http://partner-gateway:8000
 
   minio:
     image: bitnamilegacy/minio:2025.4.22

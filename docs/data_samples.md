@@ -246,6 +246,12 @@ UPDATE — shop đổi SĐT người nhận (`op = "u"`, chỉ hiển thị các
 Hai đối tác, hai schema không tương thích. Gateway cấp mã vận đơn, báo giá cước và phản hồi
 đồng bộ.
 
+Để báo giá, gateway lấy xã gửi và chiết khấu theo hồ sơ `merchants`, còn xã nhận thì tra từ
+`city` / `district` / `ward` trong request qua `ref_address_alias` + `ref_admin_unit_mapping`
+(chấp nhận cả địa chỉ cũ và mới). Không tra được xã thì báo giá theo cấp tỉnh; không tra được
+tỉnh thì từ chối với mã `UNKNOWN_PROVINCE`. Merchant không tồn tại hoặc không `ACTIVE` bị từ
+chối với mã `UNKNOWN_MERCHANT`.
+
 ### 2.1 Request kiểu Shopee (`POST /v1/partners/shopee/orders`)
 
 ```json

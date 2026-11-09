@@ -1,7 +1,7 @@
 """Các bảng tham chiếu S9 (ref_*), xem docs/data_samples.md §9."""
 from __future__ import annotations
 
-import admin_units
+from simulation.reference import admin_units
 
 # (from_state, event_type, to_state, phase). from_state None = chưa có trạng thái;
 # from_state "*" = mọi trạng thái, to_state "*" = giữ nguyên trạng thái.

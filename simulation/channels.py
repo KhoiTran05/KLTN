@@ -4,7 +4,7 @@ import itertools
 import json
 from datetime import datetime
 
-from pricing import shipment_id
+from simulation.pricing import shipment_id
 
 
 class OmsChannel:
@@ -28,6 +28,31 @@ class OmsChannel:
 
     def close(self) -> None:
         self.conn.close()
+
+
+class PartnerChannel:
+    """Đóng vai sàn TMĐT: POST đơn lên partner gateway."""
+
+    def __init__(self, gateway_url: str, time_scale: float):
+        import httpx
+        self.client = httpx.Client(base_url=gateway_url, headers={"X-Sim-Time-Scale": str(time_scale)}, timeout=30)
+
+    def post_order(self, partner: str, payload: dict) -> dict:
+        return self.client.post(f"/v1/partners/{partner}/orders", json=payload).json()
+
+    def close(self) -> None:
+        self.client.close()
+
+
+class StdoutPartnerChannel:
+    """Dry-run: in payload thay vì gọi gateway."""
+
+    def post_order(self, partner: str, payload: dict) -> dict:
+        print(f"partner.{partner}\t{json.dumps(payload, ensure_ascii=False)}")
+        return {"status": "ACCEPTED"}
+
+    def close(self) -> None:
+        pass
 
 
 class StdoutOmsChannel:

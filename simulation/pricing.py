@@ -54,6 +54,26 @@ def quote(rule: dict, zone: str, weight_gram: int, length_cm=None, width_cm=None
     }
 
 
+def faulty_quote(fault: str, rules: list[dict], service_type_id: str, zone: str, at: datetime, *args) -> dict:
+    """Báo giá cố ý sai để đo khả năng phát hiện `FEE_MISMATCH` (chỉ dùng trong mô phỏng).
+
+    `args` giống tham số của `quote` sau `zone`: cân, D, R, C, giá trị khai báo, COD, chiết khấu.
+    """
+    rule = find_rule(rules, service_type_id, zone, at)
+    if fault == "STALE_PRICING_VERSION":
+        stale = find_rule(rules, service_type_id, zone, rule["effective_from"] - timedelta(seconds=1))
+        return quote(stale, zone, *args)
+    q = quote(rule, zone, *args)
+    if fault == "MISSING_REMOTE_FEE":
+        q["total_fee_vnd"] -= q["remote_area_fee_vnd"]
+        q["remote_area_fee_vnd"] = 0
+    elif fault == "WRONG_INSURANCE":   # gấp đôi tỉ lệ và bỏ qua ngưỡng → luôn khác phí đúng khi có khai giá
+        wrong = round((args[4] or 0) * float(rule["insurance_pct"]) * 2)
+        q["total_fee_vnd"] += wrong - q["insurance_fee_vnd"]
+        q["insurance_fee_vnd"] = wrong
+    return q
+
+
 def promised_delivery_at(created_at: datetime, sla: dict, time_scale: float = 1.0) -> datetime:
     """Thời hạn giao cam kết = mốc tính + total_hours, nén theo TIME_SCALE.
 

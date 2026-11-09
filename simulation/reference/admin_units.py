@@ -5,7 +5,7 @@ import json
 import os
 from functools import lru_cache
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "reference", "admin_units")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "reference", "admin_units")
 
 _WARD_TYPES = {"Phường": "PHUONG", "Xã": "XA", "Đặc khu": "DAC_KHU"}
 

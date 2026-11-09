@@ -51,6 +51,22 @@ _STREETS = ["Lê Lợi", "Trần Hưng Đạo", "Nguyễn Trãi", "Hai Bà Trưn
 _SHOP_KINDS = ["Mỹ Phẩm", "Thời Trang", "Gia Dụng", "Điện Máy", "Sách", "Đồ Chơi", "Thực Phẩm", "Phụ Kiện"]
 _PHONE_PREFIX = ["090", "091", "093", "097", "098", "032", "035", "070", "077", "086"]
 
+# 3 shop của ví dụ trong docs/data_samples.md §1.2, để chạy lại được các request mẫu
+_DOC_MERCHANTS = [
+    {"merchant_id": "MER_000845", "merchant_name": "Shop Mỹ Phẩm Hoa Mai", "merchant_type": "SME",
+     "phone": "0987654321", "pickup_address": "Số 12 ngõ 45 phố Huế, Phường Hai Bà Trưng, Hà Nội",
+     "pickup_province_id": "P01", "pickup_ward_id": "P01_W00256", "contract_type": "VOLUME",
+     "discount_pct": 0.10, "payout_cycle": "DAILY"},
+    {"merchant_id": "MER_001203", "merchant_name": "Gia Dụng Minh Tâm (Shopee)", "merchant_type": "SME",
+     "phone": "0909111222", "pickup_address": "88 Lê Văn Việt, Phường Tăng Nhơn Phú, TP.HCM",
+     "pickup_province_id": "P79", "pickup_ward_id": "P79_W26842", "contract_type": "PAY_PER_USE",
+     "discount_pct": 0.0, "payout_cycle": "DAILY"},
+    {"merchant_id": "MER_002210", "merchant_name": "Thời Trang Linh Chi", "merchant_type": "INDIVIDUAL",
+     "phone": "0912000210", "pickup_address": "25 Trần Phú, Phường Hải Châu, Đà Nẵng",
+     "pickup_province_id": "P48", "pickup_ward_id": "P48_W20242", "contract_type": "PAY_PER_USE",
+     "discount_pct": 0.0, "payout_cycle": "WEEKLY"},
+]
+
 
 def _floor500(v: float) -> int:
     return int(v // 500 * 500)
@@ -134,7 +150,13 @@ def build_merchants(catalog: dict, seed: int = SEED) -> list[dict]:
             "status": "ACTIVE" if rnd.random() > 0.03 else "SUSPENDED",
             "created_at": created, "updated_at": created,
         })
-    return out
+
+    by_id = {m["merchant_id"]: m for m in out}
+    for doc in _DOC_MERCHANTS:
+        facility = po_by_prov[doc["pickup_province_id"]][0]["facility_id"]
+        by_id[doc["merchant_id"]] = {**out[0], **doc, "email": f"{doc['merchant_id'].lower()}@example.vn",
+                                     "default_facility_id": facility, "status": "ACTIVE"}
+    return list(by_id.values())
 
 
 def _insert(cur, table: str, rows: list[dict], conflict: str = "") -> None:
